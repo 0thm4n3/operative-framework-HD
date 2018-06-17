@@ -7,6 +7,7 @@ import logging
 from engine import session
 from optparse import OptionParser
 from pymongo import MongoClient
+import config
 
 
 def write_log(log_header="", log_text="", element_name=""):
@@ -32,7 +33,7 @@ def main():
     (options, args) = parser.parse_args()
 
     if options.session_name and options.session_id:
-        client = MongoClient("localhost", 27017)
+        client = MongoClient('mongodb://'+str(config.MONGODB_USER)+':'+str(config.MONGODB_PASS)+'@'+str(config.MONGODB_HOST)+':'+str(config.MONGODB_PORT)+'/tracking?authSource=operative_framework')
         database = client.operative_framework
         sess = session.Sess(options.session_name)
         if sess.exist():

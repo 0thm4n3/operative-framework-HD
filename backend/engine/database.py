@@ -4,13 +4,12 @@
 import glob
 import os
 import string
+import sys
 import random
 import hashlib
 import subprocess
-import sys
 import datetime
-import bson
-from pymongo import MongoClient, DESCENDING
+from pymongo import MongoClient, DESCENDING, errors
 from engine import config, display, session
 from dicttoxml import dicttoxml
 from xml.dom.minidom import parseString
@@ -19,7 +18,9 @@ from xml.dom.minidom import parseString
 class Engine(object):
 
     def __init__(self, hostname, port):
-        self.client = MongoClient(hostname, port)
+        self.client = MongoClient('mongodb://'+str(config.MONGODB_USER)+':'+str(config.MONGODB_PASS)+'@'+str(config.MONGODB_HOST)+':'+str(config.MONGODB_PORT)+'/tracking?authSource=operative_framework')
+        if not self.random_query():
+            sys.exit('Please configure/start correctly MongoDB database with --auth.')
         self.database = self.client.operative_framework
         self.default_module_tpl = {
             "_id": False,
@@ -47,6 +48,13 @@ class Engine(object):
                 "modules": list(collection.find({}, self.default_module_tpl))
             }
         return list(collection.find({by: search}).limit(limit))
+
+    def random_query(self):
+        try:
+            self.client.server_info()
+        except errors.ServerSelectionTimeoutError as err:
+            return False
+        return True
 
     def write_log(self, log_header="", log_text="", element_name=""):
         if os.path.isfile('engine/logs/webserver.log'):
@@ -82,7 +90,6 @@ class Engine(object):
                 m_path = m_path.replace('core', 'engine')
                 m_shortcut = m_path.replace('/', '.').split('.py')[0]
                 m_shortcut = m_shortcut.replace('core', 'engine')
-                print m_shortcut
                 m_name = m_shortcut.split('.')[-1]
                 m_source = open(m).read()
                 if m_name != "__init__" and m_name != "sample_module":
@@ -111,6 +118,7 @@ class Engine(object):
                                 "module_export_primary": export_primary,
                                 "module_export_category": export_category,
                             }
+                            print "+ " + str(m_shortcut)
                             self.insert_module_manual(m_template)
                     except Exception as e:
                         print str(e)
@@ -694,12 +702,12 @@ class Engine(object):
                 return key
         return "error_string"
 
-    def get_linked_from(self, element_list, already_checked, new_list):
+    def get_linked_from(self, element_list, already_checked, new_list, project_id):
         collection_subject = self.database.projects_elements
         checked = 0
         for key, subject in enumerate(element_list):
             if subject['linked_from'] != "" and subject['name'] not in already_checked:
-                check_if_linked = collection_subject.find({'linked_from': subject['name']})
+                check_if_linked = collection_subject.find({'linked_from': subject['name'], 'project_id': project_id, 'element_type': 'subject'}, {'_id': False})
                 if check_if_linked.count() < 1:
                     checked = 1
                     linked_from_key = self.find_linked_from_key(element_list, subject['linked_from'])
@@ -724,7 +732,7 @@ class Engine(object):
                             already_checked.append(subject['name'])
         if checked == 1:
             new_list = element_list
-            self.get_linked_from(element_list=element_list, already_checked=already_checked, new_list=new_list)
+            self.get_linked_from(element_list=element_list, already_checked=already_checked, new_list=new_list, project_id=project_id)
         else:
             for key, sub in enumerate(new_list):
                 if sub['linked_from'] != "":
@@ -760,7 +768,7 @@ class Engine(object):
             template['nodeSvgShape']['shapeProps']['cx'] = 0
             template['nodeSvgShape']['shapeProps']['r'] = 7
             element_list.append(template)
-        self.get_linked_from(element_list=element_list, already_checked=[], new_list=[])
+        self.get_linked_from(element_list=element_list, already_checked=[], new_list=[],project_id=project_id)
 
     def view_project_three(self, post_data):
         if "u_auth_token" not in post_data or "u_app_id" not in post_data \

@@ -2,16 +2,12 @@
 # -*- coding: utf-8 -*-
 
 from flask import Flask, jsonify, render_template, request
-from flask_restful import Resource, Api
-import logging
+import config
 
 from engine import database
 
 app = Flask(__name__)
-db = database.Engine("localhost", 27017)
-log = logging.getLogger('werkzeug')
-log.disabled = True
-app.logger.disabled = True
+db = database.Engine(config.MONGODB_HOST, config.MONGODB_PORT)
 
 @app.after_request
 def after_request(response):
@@ -175,4 +171,4 @@ def select_project_task_unique():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=config.BACKEND_PORT)

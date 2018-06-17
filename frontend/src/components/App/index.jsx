@@ -51,8 +51,8 @@ class App extends React.Component{
                         <Switch>
                             <RouteNoAuth exact path="/login" component={Login} loggedIn={this.state.userLogged}/>
                             <RouteAuth exact path="/logout" component={Logout}/>
-                            <RouteAuth exact path="/" component={Account}/>
-                            <RouteAuth exact path="/account" component={Account}/>
+                            <RouteAuth exact path="/" component={Projects}/>
+                            <RouteAuth exact path="/account" component={Projects}/>
                             <RouteAuth exact path="/modules" component={Module}/>
                             <RouteAuth exact path="/m/info/:moduleImport" component={UseModule}/>
                             <RouteAuth exact path="/tasks" component={Tasks}/>

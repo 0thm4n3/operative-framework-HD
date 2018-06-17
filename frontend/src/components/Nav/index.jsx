@@ -95,7 +95,6 @@ class Nav extends React.Component{
                 <MenuBar>
                     <img alt="operative logo" style={logoMenu} src={Logo} />
                     <ul style={listMain}>
-                        <Link to="/account" style={listLiMain}><i className={"fas fa-tachometer-alt"}></i> Dashboard</Link>
                         <Link to="/projects" style={listLiMain}><i className={"fas fa-project-diagram"}></i> Projects</Link>
                         <Link to="/modules" style={listLiMain}><i className={"fas fa-th-list"}></i> Modules</Link>
                         <Link to="/tasks" style={listLiMain}><i className={"fas fa-th-list"}></i> Results</Link>
