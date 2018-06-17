@@ -29,8 +29,8 @@ if __name__ == "__main__":
     print Fore.BLUE + "information: " + Style.RESET_ALL + "Loading dependency..."
     install_package()
     user_directory = os.path.expanduser('~') + '/'
-    if not os.path.exists('backend/'):
-        print Fore.RED + "error: " + Style.RESET_ALL + "directory 'backend/' not found please download fresh install."
+    if not os.path.exists('framework/'):
+        print Fore.RED + "error: " + Style.RESET_ALL + "directory 'framework/' not found please download fresh install."
         sys.exit()
     if os.path.exists(user_directory + '.operative_framework/'):
         print Fore.RED + "error: " + Style.RESET_ALL + "directory '" + user_directory + ".operative_framework' exist"
@@ -39,16 +39,16 @@ if __name__ == "__main__":
             print "exiting..."
             sys.exit()
         shutil.rmtree(user_directory + '.operative_framework/')
-    print Fore.BLUE + "information: " + Style.RESET_ALL + "Copy directory to '~/.operative_framwork'"
-    copy('backend/', user_directory + '.operative_framework/backend')
+    print Fore.BLUE + "information: " + Style.RESET_ALL + "Copy directory to '~/.operative_framework'"
+    copy('framework/', user_directory + '.operative_framework/framework')
     print Fore.GREEN + "success: " + Style.RESET_ALL + "Directory copy success."
     if platform.system() == "Darwin":
-        if os.path.isfile('/usr/bin/operative_server'):
-            os.remove('/usr/bin/operative_server')
-        copy("bin/operative_server.py", "/usr/bin/operative_server")
+        if os.path.isfile('/usr/local/bin/operative_server'):
+            os.remove('/usr/local/bin/operative_server')
+        copy("bin/operative_server.py", "/usr/local/bin/operative_server")
     elif platform.system() == "Linux":
-        if os.path.isfile('/usr/bin/operative_server'):
-            os.remove('/usr/bin/operative_server')
-        copy("bin/operative_server.py", "/usr/bin/operative_server")
+        if os.path.isfile('/usr/local/bin/operative_server'):
+            os.remove('/usr/local/bin/operative_server')
+        copy("bin/operative_server.py", "/usr/local/bin/operative_server")
     print Fore.GREEN + "success: " + Style.RESET_ALL + "Operative framework HD successfully installed"
     print Fore.BLUE + "information: " + Style.RESET_ALL + "now, you can run operative_server"
