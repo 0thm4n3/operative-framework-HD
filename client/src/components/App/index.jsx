@@ -1,6 +1,5 @@
 import React from "react";
 import styled, {injectGlobal} from "styled-components"
-import Account, {Logout, Login} from '../Account'
 import RouteAuth from '../RouteAuth'
 import RouteNoAuth from '../RouteNoAuth'
 import Nav from '../Nav'

@@ -33,6 +33,9 @@ class OperativeBinary(object):
             'client': 'stopped',
             'server': 'stopped'
         }
+        if not os.geteuid() == 0:
+            print >> sys.stderr, "You need root permissions to do this please run sudo " + sys.argv[0] + "."
+            sys.exit(1)
         self.directory = os.path.dirname(os.path.realpath(__file__)).rsplit('/', 1)[0]
         if error == 1:
             self.directory = os.path.expanduser('~') + "/.operative_framework"
@@ -108,9 +111,6 @@ class OperativeBinary(object):
 """ + Style.RESET_ALL
 
     def run(self):
-        if not os.geteuid() == 0:
-            print >> sys.stderr, "You need root permissions to do this please run sudo " + sys.argv[0] + "."
-            sys.exit(1)
         action = 0
         while action == 0:
             try:

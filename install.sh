@@ -11,9 +11,13 @@ echo "Moving framework, client folder to '~/.operative_framework' ..."
 cp -R framework/ ~/.operative_framework/framework
 cp -R client/ ~/.operative_framework/client
 cp bin/opf_client.py /usr/local/bin/opf_client
+echo "binary copied ${GREEN} /usr/local/bin/opf_client ${COLOR_OFF}"
 cp bin/opf_console.py /usr/local/bin/opf_console
+echo "binary copied ${GREEN} /usr/local/bin/opf_console ${COLOR_OFF}"
 cp bin/opf_server.py /usr/local/bin/opf_server
+echo "binary copied ${GREEN} /usr/local/bin/opf_server ${COLOR_OFF}"
 cp bin/opf_users.py /usr/local/bin/opf_users
+echo "binary copied ${GREEN} /usr/local/bin/opf_users ${COLOR_OFF}"
 echo "operative framework binary copied."
 echo "installation if python dependency ..."
 pip install -r requirements.txt
