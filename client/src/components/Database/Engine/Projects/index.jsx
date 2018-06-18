@@ -20,6 +20,18 @@ class EngineProjects extends React.Component{
         }
     }
 
+    static removeProject(project_id){
+        const userToken = localStorage.getItem('operativeAuthToken');
+        const userApp = localStorage.getItem('operativeApp');
+        return axios.post(SERVER_ADDR + '/project/remove', {
+            'u_auth_token': userToken,
+            'u_app_id': userApp,
+            'project_id': project_id
+        }).then(res => {
+            return res.data
+        })
+    }
+
     static listProjects(userT, userA){
         return axios.get(SERVER_ADDR + '/project/lists/' + userT + '/' + userA)
             .then(res => {

@@ -115,6 +115,11 @@ def view_project():
     return jsonify(db.view_project(post_data=request.get_json()))
 
 
+@app.route('/project/remove', methods=['POST'])
+def remove_project():
+    return jsonify(db.remove_project(post_data=request.get_json()))
+
+
 @app.route('/project/view/three', methods=['POST'])
 def view_project_three():
     return jsonify(db.view_project_three(post_data=request.get_json()))

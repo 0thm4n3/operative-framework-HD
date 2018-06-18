@@ -1482,6 +1482,37 @@ class Engine(object):
             'export': parsed.toprettyxml()
         }
 
+    def remove_project(self, post_data):
+        if "u_auth_token" not in post_data or "u_app_id" not in post_data \
+                or "project_id" not in post_data:
+            return {
+                'msg': "Please complete required field.",
+                'status': "forbidden"
+            }
+        u_auth_token = post_data['u_auth_token']
+        u_app_id = post_data['u_app_id']
+        project_id = post_data['project_id']
+        collection_users = self.database.users
+        collection = self.database.projects
+        select_user = collection_users.find({'auth_token': u_auth_token, 'app_id': u_app_id})
+        if select_user.count() < 1:
+            return {
+                'msg': "You don't have access right.",
+                'status': "forbidden"
+            }
+        find_project = collection.find({'project_id': project_id, 'app_id': u_app_id})
+        if find_project.count() < 1:
+            return {
+                'msg': "You don't have access right.",
+                'status': "forbidden"
+            }
+        collection.remove({'project_id': project_id, 'app_id': u_app_id})
+        return {
+            'msg': "Project successfully deleted",
+            'status': 'success'
+        }
+
+
 
 
 

@@ -205,18 +205,50 @@ class Projects extends React.Component{
                     })
                 }
             });
+
+        this.removeProject = this.removeProject.bind(this);
+    }
+
+
+    removeProject(e){
+        let project_id = e.target.dataset.project
+        EngineProjects.removeProject(project_id)
+            .then(res => {
+                if(res.status !== undefined){
+                    if(res.status == "success"){
+                        this.setState({
+                            'userMessage': 'Project successfully deleted',
+                            'userStatus': 'positive'
+                        });
+                        let el = document.getElementById("list_" + project_id)
+                        el.remove()
+                    }
+                    else{
+                        this.setState({
+                            'userMessage': res.msg,
+                            'userStatus': 'negative'
+                        })
+                    }
+                }
+                else{
+                    this.setState({
+                            'userMessage': 'A error as occured',
+                            'userStatus': 'negative'
+                        })
+                }
+            })
     }
 
     projectLists(){
         let rows = [];
         this.state.projects.forEach((project, i) => {
             rows.push(
-                <tr key={i}>
+                <tr key={i} id={"list_" + project.project_id}>
                     <td>{project.project_name}</td>
                     <td>{project.created_by}</td>
                     <td>{project.created_at}</td>
                     <td><Link to={"/project/view/" + project.project_id}><button className={"ui button mini basic buttonBasic"}><i className="fas fa-folder-open"></i></button></Link></td>
-
+                    <td><button data-project={project.project_id} onClick={this.removeProject} className={"ui button mini basic buttonBasic"}><i className="fas fa-trash-alt"></i></button></td>
                 </tr>
             )
         });

@@ -112,7 +112,6 @@ class Nav extends React.Component{
                     <img alt="operative logo" style={logoMenu} src={Logo} />
                     <ul style={listMainRight}>
                         <Link to="/login" style={listLiMain}><i className={"fas fa-sign-in-alt"}></i> Login</Link>
-                        <Link to="/register" style={listLiMain}><i className={"fas fa-plus"}></i> Register</Link>
                     </ul>
                 </MenuBarLogin>
             )
