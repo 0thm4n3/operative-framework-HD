@@ -5,10 +5,21 @@ import sys
 import os
 import time
 from colorama import Fore, Style
-sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)).rsplit('/', 1)[0])
-from framework import config
-from framework.external_tool import integrated
-from bin import opf_client, opf_server
+error = 0
+try:
+    sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)).rsplit('/', 1)[0])
+    from framework import config
+    from framework.external_tool import integrated
+    from bin import opf_client, opf_server
+except:
+    error = 1
+try:
+    sys.path.insert(0, os.path.expanduser('~') + "/.operative_framework/")
+    from framework import config
+    from framework.external_tool import integrated
+    from bin import opf_client, opf_server
+except:
+    error = 2
 
 
 class OperativeBinary(object):
@@ -22,6 +33,9 @@ class OperativeBinary(object):
             'client': 'stopped',
             'server': 'stopped'
         }
+        self.directory = os.path.dirname(os.path.realpath(__file__)).rsplit('/', 1)[0]
+        if error == 1:
+            self.directory = os.path.expanduser('~') + "/.operative_framework"
         self.print_banner()
         self.run()
 
@@ -94,6 +108,9 @@ class OperativeBinary(object):
 """ + Style.RESET_ALL
 
     def run(self):
+        if not os.geteuid() == 0:
+            print >> sys.stderr, "You need root permissions to do this please run sudo " + sys.argv[0] + "."
+            sys.exit(1)
         action = 0
         while action == 0:
             try:

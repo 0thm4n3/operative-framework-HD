@@ -8,8 +8,17 @@ from pymongo import MongoClient, errors
 import hashlib
 import random
 import string
-sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)).rsplit('/', 1)[0])
-from framework import config
+error = 0
+try:
+    sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)).rsplit('/', 1)[0])
+    from framework import config
+except:
+    error = 1
+try:
+    sys.path.insert(0, os.path.expanduser('~') + "/.operative_framework/")
+    from framework import config
+except:
+    error = 2
 
 
 class OperativeBinary(object):
@@ -23,6 +32,9 @@ class OperativeBinary(object):
             config.MONGODB_HOST) + ':' + str(config.MONGODB_PORT) + '/tracking?authSource=operative_framework')
         if not self.random_query():
             sys.exit('Please configure/start correctly MongoDB database with --auth.')
+        self.directory = os.path.dirname(os.path.realpath(__file__)).rsplit('/', 1)[0]
+        if error == 1:
+            self.directory = os.path.expanduser('~') + "/.operative_framework"
         self.database = self.client.operative_framework
         self.run()
 
@@ -155,6 +167,9 @@ class OperativeBinary(object):
         return False
 
     def run(self):
+        if not os.geteuid() == 0:
+            print >> sys.stderr, "You need root permissions to do this please run sudo " + sys.argv[0] + "."
+            sys.exit(1)
         self.print_menu()
         action = 0
         while action == 0:
