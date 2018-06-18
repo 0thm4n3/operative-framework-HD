@@ -19,7 +19,7 @@ $ db.createUser({user: 'operative', pwd:'operative', roles: [ "readWrite", "dbAd
 ```
 For security restart now mongoDB with --auth argument
 
-#### install Manually
+#### Install manually a operative framework HD
 ```
 $ sudo pip install -r requirements.txt
 $ sudo python framework/load_modules.py
@@ -35,7 +35,7 @@ open two shell
 2) $ cd client && npm start
 ```
 
-#### install globally a operative framework HD
+#### Install globally a operative framework HD
 ```
 $ git clone https://github.com/graniet/operative-framework-HD.git
 $ cd operative-framework-HD
