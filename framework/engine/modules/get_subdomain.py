@@ -46,9 +46,10 @@ class module_element(object):
         domain_cheked = []
         website = self.get_options('website')
         website = website.split("//")[-1].split("/")[0].split('?')[0]
+        directory = os.path.dirname(os.path.realpath(__file__)).rsplit('/', 2)[0]
         if "www." in website:
             website = website.split('www.')[1]
-        res = subprocess.Popen(['/usr/bin/python', 'external_tool/subdomain/execute.py', '-d', website], stdout=subprocess.PIPE)
+        res = subprocess.Popen(['/usr/bin/python', directory + '/external_tool/subdomain/execute.py', '-d', website], stdout=subprocess.PIPE)
         output = res.stdout.read()
         test_out = json.loads(output)
         for element in test_out:

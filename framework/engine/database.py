@@ -29,6 +29,7 @@ class Engine(object):
             "module_path": True,
             "module_description": True
         }
+        self.directory = os.path.dirname(os.path.realpath(__file__)).rsplit('/', 1)[0]
         self.three_template = []
         self.user_right = [
             'Administrator',
@@ -57,8 +58,8 @@ class Engine(object):
         return True
 
     def write_log(self, log_header="", log_text="", element_name=""):
-        if os.path.isfile('engine/logs/webserver.log'):
-            with open('engine/logs/webserver.log', "a") as log_file:
+        if os.path.isfile(self.directory + '/engine/logs/webserver.log'):
+            with open(self.directory + '/engine/logs/webserver.log', "a") as log_file:
                 if log_header == "":
                     log_header = "[" + str(datetime.datetime.today().strftime('%Y-%m-%d %H:%M')) + "]"
                 if element_name != "":
@@ -83,8 +84,8 @@ class Engine(object):
 
     def load_modules(self):
         errors_modules = []
-        if os.path.exists("engine/modules/"):
-            modules = glob.glob("engine/modules/*.py")
+        if os.path.exists(self.directory + "/engine/modules/"):
+            modules = glob.glob(self.directory + "/engine/modules/*.py")
             for m in modules:
                 m_path = m
                 m_path = m_path.replace('core', 'engine')
@@ -264,7 +265,7 @@ class Engine(object):
             self.session = session.Sess(random_id)
             self.session.generate(module_class)
             try:
-                subprocess.Popen(['/usr/bin/python', 'external.py', '-s', random_id, '-i', random_id],
+                subprocess.Popen(['/usr/bin/python', self.directory + '/external.py', '-s', random_id, '-i', random_id],
                                  stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             except subprocess.CalledProcessError as e:
                 return {
@@ -342,7 +343,7 @@ class Engine(object):
             self.session = session.Sess(random_id)
             self.session.generate(module_class)
             try:
-                subprocess.Popen(['sudo', '/usr/bin/python', 'external.py', '-s', random_id, '-i', random_id],
+                subprocess.Popen(['sudo', '/usr/bin/python', self.directory + '/external.py', '-s', random_id, '-i', random_id],
                                  stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             except subprocess.CalledProcessError as e:
                 return {

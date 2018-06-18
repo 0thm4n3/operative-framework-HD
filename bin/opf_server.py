@@ -16,7 +16,6 @@ class OperativeBinary(object):
             'author': 'Tristan Granier',
             'description': 'launch operative framework HD flask application server.'
         }
-        self.run()
 
     @staticmethod
     def print_log(color_string, type_string, text):
@@ -38,6 +37,20 @@ class OperativeBinary(object):
             sys.exit()
         return True
 
+    def run_no_banner(self):
+        print self.print_log(Fore.BLUE, 'INFO',
+                             'Welcome to Operative Framework backend ' + str(config.OPERATIVE_FRAMEWORK_VERSION))
+        if not os.path.isdir(os.path.dirname(os.path.realpath(__file__)).rsplit('/', 1)[0] + "/framework"):
+            print self.print_log(Fore.RED, 'ERROR',
+                                 "directory : '" + os.path.dirname(os.path.realpath(__file__)).rsplit('/', 1)[
+                                     0] + "/framework' not found")
+            sys.exit()
+        print self.print_log(Fore.BLUE, 'INFO', 'Starting framework in background....')
+        print self.print_log(Fore.GREEN, 'SUCCESS', 'framework start  at 127.0.0.1:' + config.BACKEND_PORT)
+        cmd = "python " + os.path.dirname(os.path.realpath(__file__)).rsplit('/', 1)[0] + "/framework/app.py"
+        a = subprocess.Popen(cmd, shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+        return True
+
 
 if __name__ == "__main__":
-    OperativeBinary()
+    OperativeBinary().run()

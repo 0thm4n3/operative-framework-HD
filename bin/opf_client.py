@@ -17,14 +17,13 @@ class OperativeBinary(object):
             'author': 'Tristan Granier',
             'description': 'launch operative framework HD client.'
         }
-        self.run()
 
     @staticmethod
     def print_log(color_string, type_string, text):
         return datetime.datetime.today().strftime('[%Y-%m-%d %H:%M:%S] ') + color_string + str(type_string) +  Style.RESET_ALL + " " + str(text)
 
     def run(self):
-        print self.print_log(Fore.BLUE, 'INFO', 'Welcome to Operative Framework client' + str(config.OPERATIVE_FRAMEWORK_VERSION))
+        print self.print_log(Fore.BLUE, 'INFORM', 'Welcome to Operative Framework client' + str(config.OPERATIVE_FRAMEWORK_VERSION))
         try:
             requests.head("http://127.0.0.1:" + config.BACKEND_PORT + "/")
         except:
@@ -33,7 +32,7 @@ class OperativeBinary(object):
         if not os.path.isdir(os.path.dirname(os.path.realpath(__file__)).rsplit('/', 1)[0] + "/client"):
             print self.print_log(Fore.RED, 'ERROR', "directory : '" + os.path.dirname(os.path.realpath(__file__)).rsplit('/', 1)[0] + "/client' not found")
             sys.exit()
-        print self.print_log(Fore.BLUE, 'INFO', 'Starting client in background....')
+        print self.print_log(Fore.BLUE, 'INFORM', 'Starting client in background....')
         print self.print_log(Fore.GREEN, 'SUCCESS', 'framework start  at 127.0.0.1:' + config.FRONTEND_PORT)
         cmd = "npm start --prefix " + os.path.dirname(os.path.realpath(__file__)).rsplit('/', 1)[0] + "/client/"
         a = subprocess.Popen(cmd, shell=True)
@@ -43,6 +42,24 @@ class OperativeBinary(object):
             print self.print_log(Fore.RED, "ERROR", "Please run it manually: npm run build --prefix 'client/'")
             sys.exit()
 
+    def run_no_banner(self):
+        print self.print_log(Fore.BLUE, 'INFORM',
+                             'Welcome to Operative Framework client' + str(config.OPERATIVE_FRAMEWORK_VERSION))
+        try:
+            requests.head("http://127.0.0.1:" + config.BACKEND_PORT + "/")
+        except:
+            print self.print_log(Fore.RED, 'ERROR', "Please run backend sudo python bin/opf_server.py")
+            sys.exit()
+        if not os.path.isdir(os.path.dirname(os.path.realpath(__file__)).rsplit('/', 1)[0] + "/client"):
+            print self.print_log(Fore.RED, 'ERROR',
+                                 "directory : '" + os.path.dirname(os.path.realpath(__file__)).rsplit('/', 1)[
+                                     0] + "/client' not found")
+            sys.exit()
+        print self.print_log(Fore.BLUE, 'INFORM', 'Starting client in background....')
+        print self.print_log(Fore.GREEN, 'SUCCESS', 'framework start  at 127.0.0.1:' + config.FRONTEND_PORT)
+        cmd = "npm start --prefix " + os.path.dirname(os.path.realpath(__file__)).rsplit('/', 1)[0] + "/client/"
+        a = subprocess.Popen(cmd, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
 
 if __name__ == "__main__":
-    OperativeBinary()
+    OperativeBinary().run()

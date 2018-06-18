@@ -163,13 +163,15 @@ class OperativeBinary(object):
             except:
                 print "\nbye..."
                 sys.exit()
-            if ":create" in user_put:
+            if ":" in user_put:
+                user_put = user_put.split(':')[1]
+            if "create" in user_put:
                 self.create_user(user_put)
-            elif ":list" in user_put:
+            elif "list" in user_put:
                 self.list_users()
-            elif ":add" in user_put:
+            elif "add" in user_put:
                 self.add_user(user_put)
-            elif ":delete" in user_put:
+            elif "delete" in user_put:
                 self.remove_user(user_put)
 
 

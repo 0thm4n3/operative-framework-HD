@@ -24,7 +24,9 @@ def write_log(log_header="", log_text="", element_name=""):
 
 
 def main():
-    logging.basicConfig(filename='engine/logs/external.log', level=logging.DEBUG)
+    directory = os.path.dirname(os.path.realpath(__file__))
+    print directory
+    logging.basicConfig(filename=directory + '/engine/logs/external.log', level=logging.DEBUG)
     if len(sys.argv) < 2:
         sys.exit("use -h for help.")
     parser = OptionParser(usage="usage: %prog [options] -s session_name", version="%prog 1.0")
