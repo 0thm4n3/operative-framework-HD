@@ -4,6 +4,8 @@ import datetime
 import sys
 import os
 import time
+import subprocess
+import requests
 from colorama import Fore, Style
 error = 0
 try:
@@ -17,7 +19,6 @@ try:
     sys.path.insert(0, os.path.expanduser('~') + "/.operative_framework/")
     from framework import config
     from framework.external_tool import integrated
-    from bin import opf_client, opf_server
 except:
     error = 2
 
@@ -74,8 +75,19 @@ class OperativeBinary(object):
         print self.print_log(Fore.YELLOW, 'WARNING', 'BEWARE YOU DON\'T HAVE LOG WHEN YOUR START WITH THIS BIN')
         print self.print_log(Fore.YELLOW, 'WARNING', 'START WITH opf_client.py FOR VIEW LOGS.')
         try:
-            opf_client.OperativeBinary().run_no_banner()
+            requests.head("http://127.0.0.1:" + config.BACKEND_PORT + "/")
+        except:
+            print self.print_log(Fore.RED, 'ERROR', "Please run backend sudo python bin/opf_server.py")
+            return False
+        try:
+            if error == 1:
+                cmd = 'sudo /usr/local/bin/./opf_client'
+                subprocess.Popen(cmd, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            else:
+                opf_client.OperativeBinary().run_no_banner()
             self.status['client'] = 'STARTED'
+            print self.print_log(Fore.BLUE, 'INFORM', 'Starting client in background....')
+            print self.print_log(Fore.GREEN, 'SUCCESS', 'framework start  at 127.0.0.1:' + config.FRONTEND_PORT)
         except:
             print self.print_log(Fore.RED, 'ERROR', 'A error as been found please check log or run client with binary (opf_client.py).')
             return False
@@ -87,8 +99,14 @@ class OperativeBinary(object):
         print self.print_log(Fore.YELLOW, 'WARNING', 'BEWARE YOU DON\'T HAVE LOG WHEN YOUR START WITH THIS BIN')
         print self.print_log(Fore.YELLOW, 'WARNING', 'START WITH opf_server.py FOR VIEW LOGS.')
         try:
-            opf_server.OperativeBinary().run_no_banner()
+            if error == 1:
+                cmd = 'sudo /usr/local/bin/./opf_server'
+                subprocess.Popen(cmd, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            else:
+                opf_server.OperativeBinary().run_no_banner()
             self.status['server'] = 'STARTED'
+            print self.print_log(Fore.BLUE, 'INFO', 'Starting framework in background....')
+            print self.print_log(Fore.GREEN, 'SUCCESS', 'framework start  at 127.0.0.1:' + config.BACKEND_PORT)
         except:
             print self.print_log(Fore.RED, 'ERROR', 'A error as been found please check log or run server with binary (opf_server.py).')
             return False

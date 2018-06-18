@@ -73,7 +73,7 @@ class OperativeBinary(object):
         print self.print_log(Fore.BLUE, 'INFORM', 'Starting client in background....')
         print self.print_log(Fore.GREEN, 'SUCCESS', 'framework start  at 127.0.0.1:' + config.FRONTEND_PORT)
         cmd = "npm start --prefix " + self.directory + "/client/"
-        a = subprocess.Popen(cmd, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        a = subprocess.Popen(cmd, shell=True)
 
 
 if __name__ == "__main__":
