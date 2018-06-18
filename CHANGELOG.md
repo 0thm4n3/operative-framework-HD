@@ -1,4 +1,4 @@
-###VERSION HD 1.0
+### VERSION HD 1.0
 + Framework base
 + Client base
 + Binary (console, server, client, users)
