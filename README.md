@@ -3,21 +3,16 @@
 **operative framework HD** is the digital investigation framework, you can interact with websites, email address, company, people, ip address ... interact with basic/graphical view and export with XML, JSON
 
 ## How to Install
-Requirements:
 
-+ MongoDB
-+ Npm
+install
++ mongoDB
++ NPM
 + Python
 
-
-Create operative framework database
-
+#### Create mongoDB database 
 ```
+$ mongo
 $ use operative_framework
 $ db.createUser({user: 'operative', pwd:'operative', roles: [ "readWrite", "dbAdmin" ]})
 ```
-
 For security restart now mongoDB with --auth argument
-
-
-
