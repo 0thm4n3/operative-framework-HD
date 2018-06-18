@@ -84,8 +84,8 @@ class Engine(object):
 
     def load_modules(self):
         errors_modules = []
-        if os.path.exists(self.directory + "/engine/modules/"):
-            modules = glob.glob(self.directory + "/engine/modules/*.py")
+        if os.path.exists("engine/modules/"):
+            modules = glob.glob("engine/modules/*.py")
             for m in modules:
                 m_path = m
                 m_path = m_path.replace('core', 'engine')
